@@ -54,7 +54,7 @@ class ProductInfo extends React.Component{
   }
 }
 */
-
+/*
 const ProductInfo = ({ partNumber }) => (
   <Query
     query={GET_NAME_PRODUCT}
@@ -74,7 +74,7 @@ const ProductInfo = ({ partNumber }) => (
       }}  
     </Query> 
 );
-
+*/
 
 class App extends React.Component {
   constructor(props) {
@@ -82,11 +82,21 @@ class App extends React.Component {
     this.state = {partNumber: ''};
   }
 
-  handleSubmit(event) {
-    this.setState({partNumber: event.target.value});
+  updateSearch = (event) => {
+    this.setState({
+      partNumber: event.target.value
+    })
   }
 
+   submitSearch = (event) => {
+     event.preventDefault()
+     console.log(this.state)
+   }
+
   render() {
+
+    const { partNumber } = this.state;
+
     return (
       <ApolloProvider 
         client={client}>
@@ -99,15 +109,31 @@ class App extends React.Component {
           Please, enter the Product Number below:
         </p>
         
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.submitSearch}>
           <label>
-          <input type="text" value={this.state.partNumber} />
+          <input type="text" value={ partNumber } onChange={this.updateSearch}/>
         </label>
         <input type="submit" value="Submit" />
         </form>
         </div> 
 
-        <ProductInfo partNumber = {this.state.partNumber} />
+        <Query
+          query={GET_NAME_PRODUCT}
+          skip={!partNumber}
+          variables={{partNumber: partNumber}} >
+
+        {({ loading, error, data }) => {
+          if (loading) return <p>Loading...</p>;
+          if (error) return <p>Error :</p>;
+          return (
+            <ul>
+            <li key={data.product.partNumber}>{data.product.name}</li>
+            </ul>
+          );
+        }}  
+
+        </Query>
+        
 
       </div>
       </ApolloProvider>
