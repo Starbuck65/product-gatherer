@@ -6,75 +6,24 @@ import { Query } from "react-apollo";
 import { ApolloProvider } from 'react-apollo';
 
 const client = new ApolloClient({
-    uri: "http://localhost:51358/graphql"
+    uri: "https://graphqlserver-productsinfo.herokuapp.com/"
 })
 
-const GET_NAME_PRODUCT = gql`
+const GET_INFO_PRODUCT = gql`
 query product($partNumber: String!) {
   product(partNumber: $partNumber)  {
     partNumber
     name
+    type
+    normalPrice
+    secondPrice
+    familyPrice_startDate
+    familyPrice_endDate
+    familyPrice_price
+    familyPrice_disclaimer
   }
 }
 `
-/*
-class ProductInfo extends React.Component{
-
-  constructor(props){
-    super(props);
-    this.state = {
-      partNumber : ""
-    }
-  }
-
-  update = (e) => {
-    this.props.handleSubmit(e.target.value);
-    this.setState({partNumber: e.target.value});
-  }
-
-  render(){
-    return (
-    <Query
-    query={GET_NAME_PRODUCT}
-    variables={ this.state.partNumber }
-  >
-      {({ loading, error, data }) => {
-      if (loading) return <p>Loading...</p>;
-      if (error) return <p>Error :</p>;
-      
-      return (
-        <ul>
-        <li key={data.product.partNumber}>{data.product.name}</li>
-        </ul>
-
-      );
-
-      }}  
-    </Query>  );
-  }
-}
-*/
-/*
-const ProductInfo = ({ partNumber }) => (
-  <Query
-    query={GET_NAME_PRODUCT}
-    variables={ partNumber }
-  >
-      {({ loading, error, data }) => {
-      if (loading) return <p>Loading...</p>;
-      if (error) return <p>Error :</p>;
-      
-      return (
-        <ul>
-        <li key={data.product.partNumber}>{data.product.name}</li>
-        </ul>
-
-      );
-
-      }}  
-    </Query> 
-);
-*/
 
 class App extends React.Component {
   constructor(props) {
@@ -84,13 +33,13 @@ class App extends React.Component {
 
   updateSearch = (event) => {
     this.setState({
-      partNumber: event.target.value
+      partNumber: document.getElementById("input_value").value
     })
   }
 
    submitSearch = (event) => {
      event.preventDefault()
-     console.log(this.state)
+     //console.log(this.state)
    }
 
   render() {
@@ -111,23 +60,31 @@ class App extends React.Component {
         
         <form onSubmit={this.submitSearch}>
           <label>
-          <input type="text" value={ partNumber } onChange={this.updateSearch}/>
+          <input id="input_value" type="text"/>
         </label>
-        <input type="submit" value="Submit" />
+        <input type="submit" onClick={this.updateSearch} />
         </form>
         </div> 
 
         <Query
-          query={GET_NAME_PRODUCT}
+          query={GET_INFO_PRODUCT}
           skip={!partNumber}
           variables={{partNumber: partNumber}} >
 
         {({ loading, error, data }) => {
           if (loading) return <p>Loading...</p>;
           if (error) return <p>Error :</p>;
+          if (data.product === null) return <p>Null product for reference number</p>;
+
           return (
             <ul>
-            <li key={data.product.partNumber}>{data.product.name}</li>
+            <p><li key={data.product.partNumber}><b>NAME:</b>{data.product.name}</li></p>
+            <p><li><b>TYPE: </b>{data.product.type}</li></p>
+            <p><li><b>NORMAL_PRICE: </b>{data.product.normalPrice}</li></p>
+            <p><li><b>SECOND_PRICE: </b>{data.product.secondPrice}</li></p>
+            <p><li><b>FAMILY_START_DATE: </b>{data.product.familyPrice_startDate}</li></p>
+            <p><li><b>FAMILY_END_DATE: </b>{data.product.familyPrice_endDate}</li></p>
+            <p><li><b>FAMILY_DISCLAIMER: </b>{data.product.familyPrice_disclaimer}</li></p>
             </ul>
           );
         }}  
