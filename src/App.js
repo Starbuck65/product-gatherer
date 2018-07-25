@@ -27,35 +27,6 @@ query product($partNumber: String!) {
   }
 }
 `
-const container = createElement('ROOT');
-const mountNode = PDFRenderer.createContainer(container);
-const doc = `
-  <Document>
-    <Page size="A5">
-      <Select value={0} />
-      <Select value={10} />
-      <Select value={20} />
-      <Select value={30} />
-      <Select value={40} />
-      <Select value={50} />
-      <Select value={60} />
-      <Select value={70} />
-      <Select value={80} />
-      <Select value={90} />
-      <Select value={100} />
-    </Page>
-  </Document>`
-;
-
-var u = "";
-PDFRenderer.updateContainer(doc, mountNode, this);
-pdf(container)
-      .toBlob()
-      .then(blob => {
-        const url = URL.createObjectURL(blob);
-        //this.setState({ document: url });
-        u = url;
-      });
 
 
 class App extends React.Component {
@@ -103,7 +74,6 @@ class App extends React.Component {
         <p className="intro-header">
           Please, enter the Product Number below:
         </p>
-        <Document file={u} />
         <form onSubmit={this.submitSearch}>
           <label>
           <input id="input_value" type="text"/>
