@@ -43,7 +43,10 @@ query product($partNumber: String!) {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {partNumber: ''};
+    this.state = {
+      partNumber: '',
+      selectedOption: '',
+    };
   };
 
   updateSearch = (event) => {
@@ -57,9 +60,16 @@ class App extends React.Component {
      //console.log(this.state)
    }
 
+   handleChange = (selectedOption) => {
+     this.setState({ selectedOption });
+     console.log('Option selected: ', selectedOption);
+   }
+
+
+
    printDocument=() => {
      const input = document.getElementById('printarea');
-     var doc = new jspdf('p','cm',[50,120]);
+     var doc = new jspdf('p','cm',this.state.selectedOption);
      doc.fromHTML(input);
      var nameFile = this.state.partNumber + '.pdf';
      doc.save(nameFile);
@@ -68,7 +78,9 @@ class App extends React.Component {
 
   render() {
 
-    const { partNumber } = this.state;
+    const { partNumber } = this.state.partNumber;
+    const { selectedOption } = this.state.selectedOption;
+
 
     return (
       <ApolloProvider
@@ -88,6 +100,13 @@ class App extends React.Component {
         <input type="submit" onClick={this.updateSearch} />
         </form>
         </div>
+
+        <Select
+          value={selectedOption}
+          onChange={this.handleChange}
+          options={DIM_OPTIONS} />
+
+
         <div className="button">
           <button onClick={this.printDocument}><b>Download as PDF</b></button>
         </div>
