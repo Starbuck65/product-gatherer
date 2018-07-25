@@ -10,6 +10,12 @@ const client = new ApolloClient({
     uri: "https://graphqlserver-productsinfo.herokuapp.com/"
 })
 
+
+var styles = {
+    color: 'red',
+    visibility: 'hidden'
+};
+
 const GET_INFO_PRODUCT = gql`
 query product($partNumber: String!) {
   product(partNumber: $partNumber)  {
@@ -47,7 +53,7 @@ class App extends React.Component {
    printDocument=() => {
      const input = document.getElementById('printarea');
      var doc = new jspdf('p','cm',[50,120]);
-     doc.fromHTML(input,);
+     doc.fromHTML(input);
      var nameFile = this.state.partNumber + '.pdf';
      doc.save(nameFile);
 
@@ -85,17 +91,19 @@ class App extends React.Component {
           skip={!partNumber}
           variables={{partNumber: partNumber}} >
 
+
+
         {({ loading, error, data }) => {
           if (loading) return <p>Loading...</p>;
           if (error) return <p>Error :</p>;
           if (data.product === null) return <p>Null product for reference number</p>;
 
           return (
-            <ul>
+            <ul id="panel" style={styles} >
             <p><b></b></p>
             <p><li key={data.product.partNumber}><b>NAME:</b>{data.product.name}</li></p>
             <p><li><b>TYPE: </b>{data.product.type}</li></p>
-            <p><li><b>NORMAL_PRICE: </b>{data.product.normalPrice}</li></p>
+            <p><li style={styles} ><b>NORMAL_PRICE: </b>{data.product.normalPrice}</li></p>
             <p><li><b>SECOND_PRICE: </b>{data.product.secondPrice}</li></p>
             <p><li><b>FAMILY_START_DATE: </b>{data.product.familyPrice_startDate}</li></p>
             <p><li><b>FAMILY_END_DATE: </b>{data.product.familyPrice_endDate}</li></p>
