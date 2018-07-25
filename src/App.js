@@ -61,7 +61,7 @@ class App extends React.Component {
    }
 
    handleChange = (selectedOption) => {
-     this.setState({ selectedOption });
+     this.setState({ selectedOption: selectedOption });
      console.log('Option selected: ', selectedOption);
    }
 
