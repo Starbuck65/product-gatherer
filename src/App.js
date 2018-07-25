@@ -4,6 +4,8 @@ import gql from 'graphql-tag';
 import './App.css';
 import { Query } from "react-apollo";
 import { ApolloProvider } from 'react-apollo';
+import * as html2canvas from 'html2canvas';
+import * as jspdf from 'jspdf';
 
 const client = new ApolloClient({
     uri: "https://graphqlserver-productsinfo.herokuapp.com/"
@@ -42,6 +44,19 @@ class App extends React.Component {
      //console.log(this.state)
    }
 
+   printDocument() {
+     const input = document.getElementById('printarea');
+     html2canvas(input)
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jspdf();
+        pdf.addImage(imgData,'JPEG',0,0);
+        pdf.output('dataurlnewwindow');
+
+      })
+    ;
+   }
+
   render() {
 
     const { partNumber } = this.state;
@@ -66,6 +81,12 @@ class App extends React.Component {
         </form>
         </div> 
 
+        <div id="printarea" style={{
+        backgroundColor: '#f5f5f5',
+        width: '210mm',
+        minHeight: '297mm',
+        marginLeft: 'auto',
+        marginRight: 'auto'}} >
         <Query
           query={GET_INFO_PRODUCT}
           skip={!partNumber}
@@ -90,6 +111,10 @@ class App extends React.Component {
         }}  
 
         </Query>
+        </div>
+        <div className="button">
+          <button onClick={this.printDocument}>Print</button>
+        </div>
         
 
       </div>
