@@ -4,7 +4,6 @@ import gql from 'graphql-tag';
 import './App.css';
 import { Query } from "react-apollo";
 import { ApolloProvider } from 'react-apollo';
-import * as html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 
 const client = new ApolloClient({
@@ -45,31 +44,12 @@ class App extends React.Component {
      //console.log(this.state)
    }
 
-   printDocument() {
+   printDocument=() => {
      const input = document.getElementById('printarea');
      var doc = new jspdf();
-     var elementHandler = {
-       '#ignorePDF': function (element, renderer) {
-         return true;
-     }
-    };
-     doc.fromHTML(
-       input, );
-
-     doc.save("test.pdf");
-
-     /*
-     html2canvas(input)
-      .then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jspdf();
-        pdf.addImage(imgData,'PNG',0,20);
-        //pdf.output('dataurlnewwindow');
-        //pdf.output('save','product.pdf');
-        pdf.save('product.pdf');
-      })
-    ; */
-
+     doc.fromHTML(input,);
+     var nameFile = this.state.partNumber + '.pdf';
+     doc.save(nameFile);
 
    }
 
@@ -99,13 +79,7 @@ class App extends React.Component {
           <button onClick={this.printDocument}><b>Download as PDF</b></button>
         </div>
 
-        <div id="printarea" style={{
-        backgroundColor: '#ffffff',
-        width: '210mm',
-        minHeight: '297mm',
-        marginLeft: 'auto',
-        marginTop: '20mm',
-        marginRight: 'auto'}} >
+        <div id="printarea"  >
         <Query
           query={GET_INFO_PRODUCT}
           skip={!partNumber}
