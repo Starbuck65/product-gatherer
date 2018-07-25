@@ -90,9 +90,7 @@ class App extends React.Component {
         <p className="intro-header">
           Please, enter the Product Number below:
         </p>
-        <Document
-                    file={u}
-                    />
+        <Document file={u} />
         <form onSubmit={this.submitSearch}>
           <label>
           <input id="input_value" type="text"/>
