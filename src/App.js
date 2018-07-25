@@ -46,7 +46,7 @@ class App extends React.Component {
 
    printDocument=() => {
      const input = document.getElementById('printarea');
-     var doc = new jspdf();
+     var doc = new jspdf('p','cm',[50,120]);
      doc.fromHTML(input,);
      var nameFile = this.state.partNumber + '.pdf';
      doc.save(nameFile);
