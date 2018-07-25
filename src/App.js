@@ -5,6 +5,7 @@ import './App.css';
 import { Query } from "react-apollo";
 import { ApolloProvider } from 'react-apollo';
 import * as jspdf from 'jspdf';
+import Select from 'react-select';
 
 const client = new ApolloClient({
     uri: "https://graphqlserver-productsinfo.herokuapp.com/"
@@ -15,6 +16,12 @@ var styles = {
     color: 'red',
     visibility: 'hidden'
 };
+
+var DIM_OPTIONS = [
+  { value: '[50,120]', label: '50x120cm'},
+  { value: '[25,60]', label: '25x60cm'},
+  { value: 'a4' , label: 'a5'}
+];
 
 const GET_INFO_PRODUCT = gql`
 query product($partNumber: String!) {

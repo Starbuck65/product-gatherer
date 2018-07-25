@@ -33,6 +33,7 @@
     "react-pdf": "^3.0.5",
     "react-router": "^4.3.1",
     "react-scripts": "1.1.4",
+    "react-select": "^2.0.0",
     "react-xml-parser": "^1.0.7",
     "recompose": "^0.27.1",
     "request": "^2.87.0",
