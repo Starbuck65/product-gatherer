@@ -7,7 +7,6 @@ import { ApolloProvider } from 'react-apollo';
 import * as html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 
-
 const client = new ApolloClient({
     uri: "https://graphqlserver-productsinfo.herokuapp.com/"
 })
@@ -48,16 +47,30 @@ class App extends React.Component {
 
    printDocument() {
      const input = document.getElementById('printarea');
+     var doc = new jspdf();
+     var elementHandler = {
+       '#ignorePDF': function (element, renderer) {
+         return true;
+     }
+    };
+     doc.fromHTML(
+       input, );
+
+     doc.save("test.pdf");
+
+     /*
      html2canvas(input)
       .then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jspdf();
-        pdf.addImage(imgData,'JPEG',0,0);
+        pdf.addImage(imgData,'PNG',0,20);
         //pdf.output('dataurlnewwindow');
-        pdf.output('save','product.pdf');
-
+        //pdf.output('save','product.pdf');
+        pdf.save('product.pdf');
       })
-    ;
+    ; */
+
+
    }
 
   render() {
@@ -82,12 +95,16 @@ class App extends React.Component {
         <input type="submit" onClick={this.updateSearch} />
         </form>
         </div>
+        <div className="button">
+          <button onClick={this.printDocument}><b>Download as PDF</b></button>
+        </div>
 
         <div id="printarea" style={{
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#ffffff',
         width: '210mm',
         minHeight: '297mm',
         marginLeft: 'auto',
+        marginTop: '20mm',
         marginRight: 'auto'}} >
         <Query
           query={GET_INFO_PRODUCT}
@@ -101,6 +118,7 @@ class App extends React.Component {
 
           return (
             <ul>
+            <p><b></b></p>
             <p><li key={data.product.partNumber}><b>NAME:</b>{data.product.name}</li></p>
             <p><li><b>TYPE: </b>{data.product.type}</li></p>
             <p><li><b>NORMAL_PRICE: </b>{data.product.normalPrice}</li></p>
@@ -114,10 +132,8 @@ class App extends React.Component {
 
         </Query>
         </div>
-        <div className="button">
-          <button onClick={this.printDocument}>Print</button>
-        </div>
-        
+
+
 
 
       </div>
