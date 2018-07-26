@@ -6,6 +6,7 @@ import { Query } from "react-apollo";
 import { ApolloProvider } from 'react-apollo';
 import * as jspdf from 'jspdf';
 import Select from 'react-select';
+import * as ptags from './templates/ptags';
 
 const client = new ApolloClient({
     uri: "https://graphqlserver-productsinfo.herokuapp.com/"
@@ -14,13 +15,13 @@ const client = new ApolloClient({
 
 var styles = {
     color: 'red',
-    visibility: 'hidden'
+    //visibility: 'hidden'
 };
 
 var DIM_OPTIONS = [
-  { value: '[50,120]', label: '50x120cm'},
-  { value: '[25,60]', label: '25x60cm'},
-  { value: 'a4' , label: 'a5'}
+  { value: '50_120', label: '50x120cm'},
+  { value: '25_60', label: '25x60cm'},
+  { value: 'a5' , label: 'a5'}
 ];
 
 const GET_INFO_PRODUCT = gql`
@@ -46,13 +47,21 @@ class App extends React.Component {
     this.state = {
       partNumber: '',
       selectedOption: '',
+      discount: 10
     };
   };
+
+  changeDiscount = (event) => {
+    this.setState({
+      discount: document.getElementById('discount').value
+    })
+  }
 
   updateSearch = (event) => {
     this.setState({
       partNumber: document.getElementById("input_value").value
-    })
+    });
+    console.log(this.state)
   }
 
    submitSearch = (event) => {
@@ -67,21 +76,41 @@ class App extends React.Component {
 
 
 
-   printDocument=() => {
+   printDocument=(data) => {
      const input = document.getElementById('printarea');
-     var doc = new jspdf('p','cm',this.state.selectedOption);
-     doc.fromHTML(input);
-     var nameFile = this.state.partNumber + '.pdf';
-     doc.save(nameFile);
+     console.log(this.state.selectedOption.value);
+     var size = 'a4';
+     var orientation = 'p';
+     switch (this.state.selectedOption.value) {
+       case '50_120':
+         size = [50,120];
+         break;
+      case '25_60':
+        size = [25,60];
+        break;
+      case 'a5':
+        size = 'a4';
+        orientation = 'l';
+        ptags.ptag.a5(data.product,this.state.discount);
+        break;
+       default:
+        size = 'a4';
+        orientation= 'p';
+     }
+
+//     var doc = new jspdf(orientation,'cm',size);//this.state.selectedOption.value);
+//     doc.fromHTML(input);
+//     var nameFile = this.state.partNumber + '.pdf';
+//     doc.save(nameFile);
 
    }
 
   render() {
 
-    const { partNumber } = this.state.partNumber;
-    const { selectedOption } = this.state.selectedOption;
+  //  const { status } = this.state;
+    //const { selectedOption } = this.state.selectedOption;
 
-
+console.log(ptags.ptag)
     return (
       <ApolloProvider
         client={client}>
@@ -99,10 +128,11 @@ class App extends React.Component {
         </label>
         <input type="submit" onClick={this.updateSearch} />
         </form>
+        <input type = "number" id="discount" value="10" onChange={this.changeDiscount}/>
         </div>
 
         <Select
-          value={selectedOption}
+          value={this.state.selectedOption}
           onChange={this.handleChange}
           options={DIM_OPTIONS} />
 
@@ -111,11 +141,12 @@ class App extends React.Component {
           <button onClick={this.printDocument}><b>Download as PDF</b></button>
         </div>
 
-        <div id="printarea"  >
+        <div id="printarea">
         <Query
           query={GET_INFO_PRODUCT}
-          skip={!partNumber}
-          variables={{partNumber: partNumber}} >
+          skip={!this.state.partNumber}
+          variables={{partNumber: this.state.partNumber}} >
+
 
 
 
@@ -123,14 +154,15 @@ class App extends React.Component {
           if (loading) return <p>Loading...</p>;
           if (error) return <p>Error :</p>;
           if (data.product === null) return <p>Null product for reference number</p>;
-
+          this.printDocument(data);
           return (
             <ul id="panel" style={styles} >
             <p><b></b></p>
             <p><li key={data.product.partNumber}><b>NAME:</b>{data.product.name}</li></p>
             <p><li><b>TYPE: </b>{data.product.type}</li></p>
             <p><li style={styles} ><b>NORMAL_PRICE: </b>{data.product.normalPrice}</li></p>
-            <p><li><b>SECOND_PRICE: </b>{data.product.secondPrice}</li></p>
+            //<p><li><b>SECOND_PRICE: </b>{data.product.secondPrice}</li></p>
+            <p><li><b>SECOND_PRICE: </b>{data.product.normalPrice - (data.product.normalPrice * (this.state.discount/100))}</li></p>
             <p><li><b>FAMILY_START_DATE: </b>{data.product.familyPrice_startDate}</li></p>
             <p><li><b>FAMILY_END_DATE: </b>{data.product.familyPrice_endDate}</li></p>
             <p><li><b>FAMILY_DISCLAIMER: </b>{data.product.familyPrice_disclaimer}</li></p>

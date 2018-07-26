@@ -23,6 +23,7 @@
     "graphql-tag": "^2.9.2",
     "html2canvas": "^1.0.0-alpha.12",
     "jspdf": "^1.4.1",
+    "jspdf-customfonts": "0.0.4-rc.4",
     "material-ui-search-bar": "^0.4.2",
     "node-fetch": "^2.2.0",
     "pdfmake": "^0.1.37",
