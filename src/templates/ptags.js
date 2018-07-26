@@ -1,17 +1,20 @@
-import * as jspdf from 'jspdf';
+import * as jsPDF from 'jspdf';
 import * as images from './images';
+import * as jspdf_customfont from './fonts';
 
 
 const ptag = {
 
   a5 : (product, discount) => {
-    var doc = new jspdf('l','mm','A4');
+    var doc = new jsPDF('l','mm','A4');
     console.log(product);
-  //  doc.setFont('Verdana', 'regular');
-    //doc.addFileToVFS("Verdana.ttf", Verdana);
-    //doc.addFont('Verdana.ttf', 'Verdana', 'normal');
-    //doc.addFont('Verdana Bold.ttf', 'Verdana', 'bold');
 
+    doc.addFont('Verdana.ttf', 'Verdana', 'normal','WinAnsiEncoding');
+    doc.addFont('Verdana Bold.ttf', 'Verdana', 'bold','WinAnsiEncoding');
+    doc.addFont('Verdana Bold Italic.ttf', 'Verdana', 'bold italic','WinAnsiEncoding');
+    doc.addFont('Verdana Italic.ttf', 'Verdana', 'italic','WinAnsiEncoding');
+
+    doc.setFont('Verdana', 'normal');
     const positions = [5,80,157,225];
 
     for (var i = 0; i < positions.length; i++) {
