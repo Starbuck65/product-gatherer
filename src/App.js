@@ -68,19 +68,19 @@ class App extends React.Component {
      //console.log(this.state)
    }
 
-   handleChange = (e, {size}) => {
-  //   this.setState({ selectedOption: selectedOption });
-     console.log('Option selected: ', size);
+   handleChange = (e, {value}) => {
+     this.setState({ selectedOption: value });
+     //console.log('Option selected: ', value);
    }
 
 
 
    printDocument=(data) => {
      const input = document.getElementById('printarea');
-     console.log(this.state.selectedOption.value);
+     console.log(this.state.selectedOption);
      var size = 'a4';
      var orientation = 'p';
-     switch (this.state.selectedOption.value) {
+     switch (this.state.selectedOption) {
        case '50_120':
          size = [50,120];
          break;
@@ -89,6 +89,7 @@ class App extends React.Component {
         break;
       case 'a5':
         size = 'a4';
+        console.log('sdf');
         orientation = 'l';
         ptags.ptag.a5(data.product,this.state.discount);
         break;
