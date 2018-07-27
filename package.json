@@ -39,6 +39,7 @@
     "recompose": "^0.27.1",
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
+    "semantic-ui-react": "^0.82.1",
     "transform-loader": "^0.2.4",
     "xml-parse": "^0.3.1",
     "xml2js": "^0.4.19"

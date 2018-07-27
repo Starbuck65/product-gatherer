@@ -22,13 +22,13 @@
   font-size: large;
 }
 
-input[type=text] {padding:5px; border:2px solid #ccc; 
+input[type=text] {padding:5px; border:2px solid #ccc;
   -webkit-border-radius: 5px;
       border-radius: 5px;
       font-size: 14px;
   }
 input[type=text]:focus {border-color:#333; }
-  
+
 input[type=submit] {padding:5px 15px; background:#ccc; border: none;
       cursor:pointer;
       margin: 5px;
@@ -37,4 +37,3 @@ input[type=submit] {padding:5px 15px; background:#ccc; border: none;
       font-family: "Noto Sans";
       font-size: 14px;
      }
-

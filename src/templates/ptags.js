@@ -25,7 +25,7 @@ const ptag = {
 
       doc.setFontSize(26);
       doc.setFontStyle('bold');
-      doc.text(product.name,x,24);
+      doc.text(product.name.toUpperCase(),x,24);
 
       doc.setFontSize(16);
       doc.setFontStyle('normal');
