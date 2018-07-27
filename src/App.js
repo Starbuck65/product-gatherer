@@ -4,25 +4,19 @@ import gql from 'graphql-tag';
 import './App.css';
 import { Query } from "react-apollo";
 import { ApolloProvider } from 'react-apollo';
-import Select from 'react-select';
+
 import * as ptags from './templates/ptags';
-import { Grid, Form, Button } from 'semantic-ui-react';
+import { Grid, Form, Button, Container, Header, Icon, Divider, Select } from 'semantic-ui-react';
 
 
 const client = new ApolloClient({
     uri: "https://graphqlserver-productsinfo.herokuapp.com/"
 })
 
-
-var styles = {
-    color: 'red',
-    //visibility: 'hidden'
-};
-
 var DIM_OPTIONS = [
-  { value: '50_120', label: '50x120cm'},
-  { value: '25_60', label: '25x60cm'},
-  { value: 'a5' , label: 'a5'}
+  { value: '50_120', text: '50x120cm'},
+  { value: '25_60', text: '25x60cm'},
+  { value: 'a5' , text: 'a5'}
 ];
 
 const GET_INFO_PRODUCT = gql`
@@ -40,7 +34,11 @@ query product($partNumber: String!) {
   }
 }
 `
-
+const languages = [
+  { key: 'de', text: 'German', value: 'de' },
+  { key: 'fr', text: 'French', value: 'fr' },
+  { key: 'it', text: 'Italian', value: 'it' }
+]
 
 class App extends React.Component {
   constructor(props) {
@@ -70,9 +68,9 @@ class App extends React.Component {
      //console.log(this.state)
    }
 
-   handleChange = (selectedOption) => {
-     this.setState({ selectedOption: selectedOption });
-     console.log('Option selected: ', selectedOption);
+   handleChange = (e, {size}) => {
+  //   this.setState({ selectedOption: selectedOption });
+     console.log('Option selected: ', size);
    }
 
 
@@ -87,7 +85,7 @@ class App extends React.Component {
          size = [50,120];
          break;
       case '25_60':
-        size = [25,60];
+        ptags.ptag.pb25x60(data.product,this.state.discount);
         break;
       case 'a5':
         size = 'a4';
@@ -115,14 +113,22 @@ console.log(ptags.ptag)
     return (
       <ApolloProvider
         client={client}>
+        <Container>
       <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Product Gatherer</h1>
-        </header>
+      <Grid columns = {1} >
+        <Grid.Row><Grid.Column>
+           <Header as='h2' icon textAlign='center'>
+              <Icon name='print' circular />
+              <Header.Content>Discount Ptag Printer</Header.Content>
+           </Header>
+           <Divider />
+        </Grid.Column></Grid.Row>
+        <Grid.Row><Grid.Column>
         <Grid columns={3} divided>
         <Grid.Row>
           <Grid.Column>
           <Form>
+            <Form.Field control={Select} label='Language' options={languages} placeholder='Language' />
             <Form.Field>
               <label>Enter the product number:</label>
               <input id="input_value" type="text" placeholder="Product number"/>
@@ -134,26 +140,8 @@ console.log(ptags.ptag)
             <Button type='submit' onClick={this.updateSearch}>Search</Button>
 
           </Form>
-            <div className="App-intro">
-              <p className="intro-header">
-                Please, enter the Product Number below:
-              </p>
-              <form onSubmit={this.submitSearch}>
-                <label>
-                  <input id="input_value" type="text"/>
-                </label>
-                <input type="submit" onClick={this.updateSearch} />
-              </form>
-              <input type = "number" id="discount" value="10" onChange={this.changeDiscount}/>
-            </div>
             <div>
-              <Select value={this.state.selectedOption} onChange={this.handleChange} options={DIM_OPTIONS}/>
             </div>
-          </Grid.Column>
-          <Grid.Column>
-          <div className="button">
-            <button onClick={this.printDocument}><b>Download as PDF</b></button>
-          </div>
           </Grid.Column>
           <Grid.Column>
           <div id="printarea">
@@ -168,17 +156,16 @@ console.log(ptags.ptag)
             if (data.product === null) return <p>Null product for reference number</p>;
             this.printDocument(data);
             return (
-              <ul id="panel" style={styles} >
-              <p><b></b></p>
-              <p><li key={data.product.partNumber}><b>NAME:</b>{data.product.name}</li></p>
-              <p><li><b>TYPE: </b>{data.product.type}</li></p>
-              <p><li style={styles} ><b>NORMAL_PRICE: </b>{data.product.normalPrice}</li></p>
-              //<p><li><b>SECOND_PRICE: </b>{data.product.secondPrice}</li></p>
-              <p><li><b>SECOND_PRICE: </b>{data.product.normalPrice - (data.product.normalPrice * (this.state.discount/100))}</li></p>
-              <p><li><b>FAMILY_START_DATE: </b>{data.product.familyPrice_startDate}</li></p>
-              <p><li><b>FAMILY_END_DATE: </b>{data.product.familyPrice_endDate}</li></p>
-              <p><li><b>FAMILY_DISCLAIMER: </b>{data.product.familyPrice_disclaimer}</li></p>
-              </ul>
+              <div id="panel">
+
+              <p><b>NAME:</b>{data.product.name}</p>
+              <p><b>TYPE: </b>{data.product.type}</p>
+              <p><b>NORMAL_PRICE: </b>{data.product.normalPrice}</p>
+              <p><b>SECOND_PRICE: </b>{data.product.normalPrice - (data.product.normalPrice * (this.state.discount/100))}</p>
+              <p><b>FAMILY_START_DATE: </b>{data.product.familyPrice_startDate}</p>
+              <p><b>FAMILY_END_DATE: </b>{data.product.familyPrice_endDate}</p>
+              <p><b>FAMILY_DISCLAIMER: </b>{data.product.familyPrice_disclaimer}</p>
+              </div>
             );
           }}
 
@@ -186,8 +173,17 @@ console.log(ptags.ptag)
           </div>
 
           </Grid.Column>
+          <Grid.Column>
+          <Form>
+          <Form.Field control={Select} label='Size' name='size' options={DIM_OPTIONS} placeholder='Size' onChange={this.handleChange} />
+          <Button type='submit' onClick={this.printDocument}>Download PDF</Button>
+          </Form>
+
+          </Grid.Column>
           </Grid.Row>
 
+        </Grid>
+        </Grid.Column></Grid.Row>
         </Grid>
 
 
@@ -196,8 +192,8 @@ console.log(ptags.ptag)
 
 
 
-
       </div>
+      </Container>
       </ApolloProvider>
     );
   }

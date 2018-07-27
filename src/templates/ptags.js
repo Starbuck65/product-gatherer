@@ -7,8 +7,6 @@ const ptag = {
 
   a5 : (product, discount) => {
     var doc = new jsPDF('l','mm','A4');
-    console.log(product);
-
     doc.addFont('Verdana.ttf', 'Verdana', 'normal','WinAnsiEncoding');
     doc.addFont('Verdana Bold.ttf', 'Verdana', 'bold','WinAnsiEncoding');
     doc.addFont('Verdana Bold Italic.ttf', 'Verdana', 'bold italic','WinAnsiEncoding');
@@ -49,7 +47,19 @@ const ptag = {
     }
     var nameFile = product.partNumber + '.pdf';
     doc.save(nameFile);
-  }
+  },
+
+  pb25x60: (product, discount) => {
+    var doc = new jsPDF('p','mm',[250,600]);
+    doc.addFont('Verdana.ttf', 'Verdana', 'normal','WinAnsiEncoding');
+    doc.addFont('Verdana Bold.ttf', 'Verdana', 'bold','WinAnsiEncoding');
+    doc.addFont('Verdana Bold Italic.ttf', 'Verdana', 'bold italic','WinAnsiEncoding');
+    doc.addFont('Verdana Italic.ttf', 'Verdana', 'italic','WinAnsiEncoding');
+    var nameFile = product.partNumber + '.pdf';
+    doc.save(nameFile);
+  },
+
+
 }
 
 export { ptag };
