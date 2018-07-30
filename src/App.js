@@ -230,7 +230,7 @@ class App extends React.Component {
             variables={{partNumber: this.state.partNumber, lang: this.state.lang}} >
 
           {({ loading, error, data }) => {
-            if (loading) return <p>Loading...</p>;
+            if (loading) return <p></p>;
             if (error) return <p>Error :</p>;
             if (data.product === null) return <p>Null product for reference number</p>;
             return (
