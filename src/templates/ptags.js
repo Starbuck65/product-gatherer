@@ -93,7 +93,7 @@ const ptag = {
     doc.save(nameFile);
   },
 
-  pb25x60: (product, discount, start, end) => {
+  pb25x60: (product, discountPrice, normalPrice, start, end) => {
     var doc = new jsPDF('p','mm',[500,600]);
     doc.addFont('Verdana.ttf', 'Verdana', 'normal','WinAnsiEncoding');
     doc.addFont('Verdana Bold.ttf', 'Verdana', 'bold','WinAnsiEncoding');
@@ -130,7 +130,7 @@ const ptag = {
 
       doc.setFontStyle('bold');
       //var priceDiscount= discount.toString();
-      var priceDiscount= product.normalPrice.toString();//discount.toString();
+      var priceDiscount = discountPrice.toString();//product.normalPrice.toString();//discount.toString();
       var splitText = priceDiscount.split('.')
       var size = doc.getStringUnitWidth(splitText[0] + '.'); // get the size
       var fS = 280;
@@ -153,13 +153,13 @@ const ptag = {
 
       doc.setFontSize(32);
       doc.setFontStyle('normal');
-      //doc.text(translations[product.lang].fromDate + start + translations[product.lang].to + end, x, 500);
+      doc.text(translations[product.lang].fromDate + start + translations[product.lang].to + end, x, 500);
       console.log(product);
-      doc.text(product.priceDisclaimer, x, 500);
+      //doc.text(product.priceDisclaimer, x, 500);
 
       doc.setFontSize(50);
       doc.setFontStyle('bold');
-      doc.text(translations[product.lang].normalPrice + product.secondPrice, x, 538);
+      doc.text(translations[product.lang].normalPrice + normalPrice.toString(), x, 538);
 
       doc.addImage(images.images.logo, 'JPEG', x+70, 558, 47,16);
 
