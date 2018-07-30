@@ -126,11 +126,13 @@ query product($partNumber: String!, $lang: String!) {
     type
     normalPrice
     secondPrice
+    priceDisclaimer
     familyPrice_startDate
     familyPrice_endDate
     familyPrice_price
     familyPrice_disclaimer
     lang
+    info
   }
 }
 `
