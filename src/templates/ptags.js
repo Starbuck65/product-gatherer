@@ -5,7 +5,7 @@ import * as jspdf_customfont from './fonts';
 
 const translations = {
   de:{
-    fromDate: 'Gultig von ',
+    fromDate: 'Gültig von ',
     to: ' bis ',
     header1: {
       text:'Jetz',
