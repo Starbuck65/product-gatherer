@@ -7,7 +7,7 @@ import {DateInput}  from 'semantic-ui-calendar-react';
 var DIM_OPTIONS = [
   { value: '50_120', text: '50x120cm'},
   { value: '25_60', text: '25x60cm'},
-  { value: 'a5' , text: 'a5'}
+//  { value: 'a5' , text: 'a5'}
 ];
 
 export class PtagPrinter extends React.Component {
@@ -60,10 +60,10 @@ componentDidUpdate = (prevProps) => {
     }
     switch (this.state.ptagSize) {
       case '50_120':
-        ptags.ptag.pb25x60(this.state.product,finalPrice,normalPrice, this.state.date_start, this.state.date_end);
+        ptags.ptag.pb50x120(this.state.product,finalPrice, normalPrice, this.state.date_start, this.state.date_end);
         break;
      case '25_60':
-       ptags.ptag.pb25x60(this.state.product,finalPrice,normalPrice, this.state.date_start, this.state.date_end);
+       ptags.ptag.pb25x60(this.state.product,finalPrice, normalPrice, this.state.date_start, this.state.date_end);
        break;
      case 'a5':
        ptags.ptag.a5(this.state.product,finalPrice);
@@ -82,7 +82,7 @@ componentDidUpdate = (prevProps) => {
       <Form>
         <Form.Group widths='equal'>
           <Form.Field>
-            <label>From:</label>
+            <label>From: {this.state.date_start}</label>
             <DateInput
             inline
             name="date_start"
@@ -91,7 +91,7 @@ componentDidUpdate = (prevProps) => {
             onChange={this.handleChange}/>
           </Form.Field>
           <Form.Field>
-            <label>To:</label>
+            <label>To: {this.state.date_end}</label>
             <DateInput
             inline
             name="date_end"

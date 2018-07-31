@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { Query } from "react-apollo";
 import { ApolloProvider } from 'react-apollo';
 
-import { Grid, Form, Button, Container, Header, Icon, Divider, Select, Checkbox } from 'semantic-ui-react';
+import { Grid, Message, Form, Button, Container, Header, Icon, Divider, Select, Checkbox, Popup } from 'semantic-ui-react';
 import {PtagPrinter} from './ptag-printer.js';
 
 const client = new ApolloClient({
@@ -92,6 +92,19 @@ export class OnlineProduct extends React.Component {
       <div className="App">
       <Grid columns = {1} >
         <Grid.Row><Grid.Column>
+          <Message>
+            <Message.Header>Online Product</Message.Header>
+              <p>With this tool you can load information from any product or combination that is available online in <a href="http://www.ikea.ch" target="_blank">www.IKEA.ch</a>.<br/>You can use the prices that are available online.
+              </p>
+              <p>For the discounted price you can use:
+              <ul>
+              <li>Discount price form the web (if available)</li>
+              <li>Apply a manual discount to the normal price</li>
+              <li>Use a manual price</li>
+              </ul></p>
+            </Message>
+            </Grid.Column></Grid.Row>
+            <Grid.Row><Grid.Column>
         <Grid columns={1} divided>
         <Grid.Row>
           <Grid.Column>
@@ -100,7 +113,11 @@ export class OnlineProduct extends React.Component {
             <Form.Field control={Select} label='Language' options={languages} name='lang' onChange={this.handleChange} value={this.state.lang} placeholder='Language' />
             <Form.Field>
               <label>Enter the product number:</label>
-              <Form.Input id="input_value" type="text" placeholder="Product number"/>
+              <Popup trigger={<Form.Input id="input_value" type="text" placeholder="Product number"/>} header='Product Number' on='focus'>
+                <Popup.Content>
+                  <p>Write the product number without any point for the search. If the product is a combination, use an <strong>S</strong> before the number</p>
+                </Popup.Content>
+              </Popup>
             </Form.Field>
 
             </Form.Group>

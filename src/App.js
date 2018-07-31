@@ -32,6 +32,12 @@ class App extends React.Component {
                   <Tab menu={{ pointing: true }} panes={panes} />
                 </Grid.Column>
               </Grid.Row>
+              <Divider />
+              <Grid.Row>
+                <Grid.Column>
+                  <p>If you have any suggestion, please send an email to: <a href="mailto:javier.hospitalponcell@ikea.com">javier.hospitalponcell@ikea.com</a></p>
+                </Grid.Column>
+              </Grid.Row>
             </Grid>
           </div>
         </Container>
