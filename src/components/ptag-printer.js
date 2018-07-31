@@ -7,7 +7,7 @@ import {DateInput}  from 'semantic-ui-calendar-react';
 var DIM_OPTIONS = [
   { value: '50_120', text: '50x120cm'},
   { value: '25_60', text: '25x60cm'},
-//  { value: 'a5' , text: 'a5'}
+  { value: 'a5' , text: 'a5'}
 ];
 
 export class PtagPrinter extends React.Component {
@@ -66,7 +66,7 @@ componentDidUpdate = (prevProps) => {
        ptags.ptag.pb25x60(this.state.product,finalPrice, normalPrice, this.state.date_start, this.state.date_end);
        break;
      case 'a5':
-       ptags.ptag.a5(this.state.product,finalPrice);
+       ptags.ptag.a5(this.state.product,finalPrice, normalPrice, this.state.date_start, this.state.date_end);
        break;
       default:
     }

@@ -58,7 +58,7 @@ const translations = {
 
 const ptag = {
 
-  a5 : (product, discount) => {
+  a5 : (product, discountPrice, normalPrice, start, end) => {
     var doc = new jsPDF('l','mm','A4');
     doc.addFont('Verdana.ttf', 'Verdana', 'normal','WinAnsiEncoding');
     doc.addFont('Verdana Bold.ttf', 'Verdana', 'bold','WinAnsiEncoding');
@@ -78,15 +78,15 @@ const ptag = {
       doc.setFontStyle('bold');
       doc.text(product.name.toUpperCase(),x,24);
 
-      doc.setFontSize(16);
+      doc.setFontSize(10);
       doc.setFontStyle('normal');
-      var t = doc.splitTextToSize('Characteristics dsf sd fsd fsd fsd ffsdf ',65);
+      var t = doc.splitTextToSize(product.info,65);
       doc.text(t, x, 30);
-      var priceDiscount = product.normalPrice - (product.normalPrice * (discount/100));
-      var priceDiscount = priceDiscount.toFixed(2);
-      doc.setFontSize(48);
+      var priceDiscount = discountPrice.toString();
+
+      doc.setFontSize(44);
       doc.setFontStyle('bold');
-      doc.text(priceDiscount.toString(),x,155);
+      doc.text(priceDiscount,x,155);
 
       doc.setFontSize(8);
       doc.setFontStyle('normal');
@@ -94,9 +94,9 @@ const ptag = {
 
       doc.setFontSize(30);
       doc.setFontStyle('bold');
-      doc.text(product.normalPrice,x,175);
+      doc.text(normalPrice.toString(),x,175);
 
-      doc.addImage(images.images.logo, 'JPEG', x, 195);
+      doc.addImage(images.images.logo, 'JPEG', x, 195, 24,9);
     }
 
     var nameFile = (product.partNumber!='') ? product.partNumber + '.pdf' :  'A5_' + Math.random().toString(36).substring(2, 8) + '.pdf';
@@ -109,6 +109,7 @@ const ptag = {
     doc.addFont('Verdana Bold.ttf', 'Verdana', 'bold','WinAnsiEncoding');
     doc.addFont('Verdana Bold Italic.ttf', 'Verdana', 'bold italic','WinAnsiEncoding');
     doc.addFont('Verdana Italic.ttf', 'Verdana', 'italic','WinAnsiEncoding');
+    doc.setFont('Verdana', 'normal');
     const positions = [30, 280];
     for (var i = 0; i < positions.length; i++) {
       var x = positions[i];
@@ -133,7 +134,7 @@ const ptag = {
       doc.setFontStyle('bold');
       doc.text(product.name.toUpperCase(), x, 194 );
 
-      doc.setFontSize(30);
+      doc.setFontSize(25);
       doc.setFontStyle('normal');
       var t = doc.splitTextToSize(product.info,185);
       doc.text(t, x, 212);
@@ -185,7 +186,7 @@ const ptag = {
     doc.addFont('Verdana Bold.ttf', 'Verdana', 'bold','WinAnsiEncoding');
     doc.addFont('Verdana Bold Italic.ttf', 'Verdana', 'bold italic','WinAnsiEncoding');
     doc.addFont('Verdana Italic.ttf', 'Verdana', 'italic','WinAnsiEncoding');
-
+    doc.setFont('Verdana', 'normal');
     const positions = [60];
     for (var i = 0; i < positions.length; i++) {
       var x = positions[i];
@@ -197,20 +198,20 @@ const ptag = {
       doc.setFontSize(translations[product.lang].header2.size2);
       doc.text(translations[product.lang].header2.text, x, 200);
 
-      doc.setFontSize(80);
+      doc.setFontSize(70);
       doc.setFontStyle('bold');
       var t = doc.splitTextToSize(product.type,377);
       if (t.length > 1) {
-        doc.text(t , x, 237 );
+        doc.text(t , x, 245 );
       }else{
-        doc.text(t , x, 269 );
+        doc.text(t , x, 275 );
       }
 
       doc.setFontSize(160);
       doc.setFontStyle('bold');
       doc.text(product.name.toUpperCase(), x, 340);
 
-      doc.setFontSize(60);
+      doc.setFontSize(50);
       doc.setFontStyle('normal');
       var t = doc.splitTextToSize(product.info, 384);
       doc.text(t, x, 368);
