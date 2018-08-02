@@ -8,7 +8,7 @@ const translations = {
     fromDate: 'Gültig von ',
     to: ' bis ',
     header1: {
-      text:'Jetz',
+      text:'Jetzt',
       size:'120',
       size2: '243'
     },
