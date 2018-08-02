@@ -66,7 +66,7 @@ const ptag = {
     doc.addFont('Verdana Italic.ttf', 'Verdana', 'italic','WinAnsiEncoding');
 
     doc.setFont('Verdana', 'normal');
-    const positions = [5,80,157,225];
+    const positions = [1,74,147,222];
 
     for (var i = 0; i < positions.length; i++) {
       var x = positions[i];
@@ -78,15 +78,19 @@ const ptag = {
       doc.setFontStyle('bold');
       doc.text(product.name.toUpperCase(),x,24);
 
-      doc.setFontSize(10);
+      doc.setFontSize(12);
       doc.setFontStyle('normal');
       var t = doc.splitTextToSize(product.info,65);
-      doc.text(t, x, 30);
+      doc.text(t, x, 38);
       var priceDiscount = discountPrice.toString();
 
       doc.setFontSize(44);
       doc.setFontStyle('bold');
       doc.text(priceDiscount,x,155);
+
+      doc.setFontSize(32);
+      doc.setFontStyle('normal');
+      doc.text(translations[product.lang].fromDate + start + translations[product.lang].to + end, x, 500);
 
       doc.setFontSize(8);
       doc.setFontStyle('normal');
