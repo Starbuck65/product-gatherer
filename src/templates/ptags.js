@@ -70,35 +70,43 @@ const ptag = {
 
     for (var i = 0; i < positions.length; i++) {
       var x = positions[i];
+
+      doc.setFontSize(36);
+      doc.setFontStyle('bold');
+      doc.text(translations[product.lang].header1.text, x, 12 );
+
+      doc.setFontSize(28);
+      doc.text(translations[product.lang].header2.text, x, 24);
+
       doc.setFontStyle('normal');
       doc.setFontSize(12);
-      doc.text(product.type,x,12);
+      doc.text(product.type,x,38);
 
       doc.setFontSize(26);
       doc.setFontStyle('bold');
-      doc.text(product.name.toUpperCase(),x,24);
+      doc.text(product.name.toUpperCase(),x,50);
 
       doc.setFontSize(12);
       doc.setFontStyle('normal');
       var t = doc.splitTextToSize(product.info,65);
-      doc.text(t, x, 38);
+      doc.text(t, x, 62);
       var priceDiscount = discountPrice.toString();
 
       doc.setFontSize(44);
       doc.setFontStyle('bold');
       doc.text(priceDiscount,x,155);
 
-      doc.setFontSize(32);
+      doc.setFontSize(10);
       doc.setFontStyle('normal');
-      doc.text(translations[product.lang].fromDate + start + translations[product.lang].to + end, x, 500);
+      doc.text(translations[product.lang].fromDate + start + translations[product.lang].to + end, x, 165);
 
       doc.setFontSize(8);
       doc.setFontStyle('normal');
-      doc.text(translations[product.lang].normalPrice,x,164);
+      doc.text(translations[product.lang].normalPrice,x,175);
 
       doc.setFontSize(30);
       doc.setFontStyle('bold');
-      doc.text(normalPrice.toString(),x,175);
+      doc.text(normalPrice.toString(),x,185);
 
       doc.addImage(images.images.logo, 'JPEG', x, 195, 24,9);
     }
