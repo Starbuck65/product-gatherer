@@ -6,8 +6,12 @@ import {DateInput}  from 'semantic-ui-calendar-react';
 
 var DIM_OPTIONS = [
   { value: '50_120', text: '50x120cm'},
-  { value: '25_60', text: '25x60cm'},
-  { value: 'a5' , text: 'a5'}
+  { value: '25_60_2tag', text: '25x60cm with 2 tags'},
+  { value: '25_60_1tag', text: '25x60cm with 1 tag'},
+  { value: 'A5_4tags' , text: 'A5 with 4 tags'},
+  { value: 'A5_3tags' , text: 'A5 with 3 tags'},
+  { value: 'A5_2tags' , text: 'A5 with 2 tags'},
+  { value: 'A5_1tags' , text: 'A5 with 1 tag'}
 ];
 
 export class PtagPrinter extends React.Component {
@@ -15,7 +19,7 @@ export class PtagPrinter extends React.Component {
     super(props);
     this.state = {
       product: props.product,
-      ptagSize: '25_60',
+      ptagSize: '25_60_2tag',
       discount: 10,
       date_start: '',
       date_end: '',
@@ -45,14 +49,16 @@ componentDidUpdate = (prevProps) => {
     const input = document.getElementById('printarea');
     var finalPrice = 0 ;
     var normalPrice = 0;
+    var unroundedPrice = 0;
+    var roundedPrice = 0;
     console.log(this.state);
     if (this.state.pricingMethod==='1'){
       finalPrice = parseFloat(this.state.product.normalPrice).toFixed(2);
       normalPrice = parseFloat(this.state.product.secondPrice).toFixed(2);
     }else if (this.state.pricingMethod==='2') {
-      finalPrice = this.state.product.normalPrice - (this.state.product.normalPrice * (this.state.discount/100));
-      //finalPrice = this.state.product.normalPrice - (this.state.product.normalPrice * (this.state.discount/100));
-      finalPrice = finalPrice.toFixed(2);
+      unroundedPrice = this.state.product.normalPrice - (this.state.product.normalPrice * (this.state.discount/100));
+      roundedPrice = Math.round( unroundedPrice * 10 ) / 10;
+      finalPrice = roundedPrice.toFixed(2);
       normalPrice = parseFloat(this.state.product.normalPrice).toFixed(2);
     }else if (this.state.pricingMethod==='3') {
       finalPrice = parseFloat(this.state.discountPrice).toFixed(2);
@@ -62,12 +68,25 @@ componentDidUpdate = (prevProps) => {
       case '50_120':
         ptags.ptag.pb50x120(this.state.product,finalPrice, normalPrice, this.state.date_start, this.state.date_end);
         break;
-     case '25_60':
-       ptags.ptag.pb25x60(this.state.product,finalPrice, normalPrice, this.state.date_start, this.state.date_end);
+     case '25_60_2tag':
+       ptags.ptag.pb25x60_2tags(this.state.product,finalPrice, normalPrice, this.state.date_start, this.state.date_end);
        break;
-     case 'a5':
-       ptags.ptag.a5(this.state.product,finalPrice, normalPrice, this.state.date_start, this.state.date_end);
+     case '25_60_1tag':
+       ptags.ptag.pb25x60_1tag(this.state.product,finalPrice, normalPrice, this.state.date_start, this.state.date_end);
        break;
+     case 'A5_4tags':
+       ptags.ptag.A5_4tags(this.state.product,finalPrice, normalPrice, this.state.date_start, this.state.date_end);
+       break;
+     case 'A5_3tags':
+       ptags.ptag.A5_3tags(this.state.product,finalPrice, normalPrice, this.state.date_start, this.state.date_end);
+       break;
+     case 'A5_2tags':
+       ptags.ptag.A5_2tags(this.state.product,finalPrice, normalPrice, this.state.date_start, this.state.date_end);
+       break;
+     case 'A5_1tags':
+       ptags.ptag.A5_1tags(this.state.product,finalPrice, normalPrice, this.state.date_start, this.state.date_end);
+       break;
+
       default:
     }
   }
