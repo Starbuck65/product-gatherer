@@ -24,13 +24,13 @@ const translations = {
     fromDate: 'Valable du ',
     to: ' au ',
     header1: {
-      text:'Maintenant',
+      text:'Offre',
       size:'89',
       size2: '178'
 
     },
     header2: {
-      text:"sur l'offre",
+      text:"du moment",
       size:'69',
       size2: '138'
 
